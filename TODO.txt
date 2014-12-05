@@ -1,0 +1,30 @@
+﻿TODO
+
+Rename projects : 
+	- CORE
+	- BUSINESS
+	- UI
+
+CORE ==
+UPG Helper.ReadProtobufMessage : avoid Reflection
+UPG Implement methods to search Players and Team by ID by EntityID
+FIX bug appearing when not using "RawPlayers" anymore : players not disconnected
+FIX possible wrong user in scoreboard
+UPG Use constructor for GameEventArgs
+FIX overtime scores (ct/t sides)
+FIX bug when parsing old DEMO (PROTOCOL_VERSION <= )
+UPG Associate players and weapons all game long
+UPG DemoParser : pass parameters to tell which protobuf messages to parse (e.g. only scores, only header, only ranks, ...)
+UPG DemoPacketParser : use const strings
+UPG separate entity and players/teams/equipment
+UPG remove constructor with reader in DEMOhEADER And mb other classes
+UPG create EventManager
+UPG use WeakEventManager
+TDO implement instance baseline parsing
+
+BUSINESS ==
+UPG Create business model for stats : classes for counting frags for each players, scoreboard, ...
+UPG Implement hltv.org rating formula
+
+UI ==
+UPG Display team names and scores as soon as we can
