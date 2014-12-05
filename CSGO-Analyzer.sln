@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoParser-UI", "DemoParser-UI\DemoParser-UI.csproj", "{58E55DE0-72D2-4BE5-A8BB-9EBF0A4FCF61}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoParser-Model", "DemoParser-Model\DemoParser-Model.csproj", "{2914F7C3-8329-4B3A-B170-C13044D6DE4F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{58E55DE0-72D2-4BE5-A8BB-9EBF0A4FCF61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58E55DE0-72D2-4BE5-A8BB-9EBF0A4FCF61}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58E55DE0-72D2-4BE5-A8BB-9EBF0A4FCF61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2914F7C3-8329-4B3A-B170-C13044D6DE4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2914F7C3-8329-4B3A-B170-C13044D6DE4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2914F7C3-8329-4B3A-B170-C13044D6DE4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2914F7C3-8329-4B3A-B170-C13044D6DE4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
