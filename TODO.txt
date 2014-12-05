@@ -8,6 +8,7 @@ Rename projects :
 CORE ==
 UPG Helper.ReadProtobufMessage : avoid Reflection
 UPG Implement methods to search Players and Team by ID by EntityID
+UPG Add events for Team/Player add/update
 FIX bug appearing when not using "RawPlayers" anymore : players not disconnected
 FIX possible wrong user in scoreboard
 UPG Use constructor for GameEventArgs
