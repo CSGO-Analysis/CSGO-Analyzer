@@ -54,6 +54,10 @@ namespace DemoParser_UI
 			this.buttonPause.IsEnabled = false;
 			this.progressBar.Value = 0;
 			this.labelProgress.Content = string.Empty;
+
+			this.lastTick = 0;
+			this.avgTick = 0;
+			this.nbSeconds = 0;
 		}
 
 		private void InitParser(Stream demoFile)
@@ -66,8 +70,8 @@ namespace DemoParser_UI
 			demoParser.EventsManager.PlayerKilled += demoParser_PlayerKilled;
 			demoParser.EventsManager.RoundEnd += demoParser_RoundEnd;
 			demoParser.EventsManager.RoundMvp += demoParser_RoundMvp;
-			//demoParser.PlayerChat += demoParser_PlayerChat;
-			//demoParser.WeaponFired += demoParser_WeaponFired;
+			//demoParser.EventsManager.PlayerChat += demoParser_PlayerChat;
+			//demoParser.EventsManager.WeaponFired += demoParser_WeaponFired;
 			matchInProgress = true;
 		}
 
