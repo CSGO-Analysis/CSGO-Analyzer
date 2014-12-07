@@ -8,9 +8,10 @@ namespace DemoParser_Core.Streams
 		public override bool CanRead { get { return true; } }
 		public override bool CanSeek { get { return false; } }
 		public override bool CanWrite { get { return false; } }
-		public override long Length { get{ return _Length; } }
+		public override long Length { get { return _Length; } }
 
-		public override long Position {
+		public override long Position
+		{
 			get { return _Position; }
 			set { throw new NotImplementedException(); }
 		}
@@ -32,12 +33,27 @@ namespace DemoParser_Core.Streams
 			this._Position = 0;
 		}
 
+		private const int TrashSize = 4096;
+		private static readonly byte[] Dignitrash = new byte[TrashSize];
+
 		protected override void Dispose(bool disposing)
 		{
 			base.Dispose(disposing);
 
 			if (disposing)
-				ReadBytes(checked((int)(Length - _Position))); // Just read all the remaining shit in case we didn't read everything.
+			{
+				var remaining = Length - _Position;
+				if (Underlying.CanSeek)
+					Underlying.Seek(remaining, SeekOrigin.Current);
+				else
+				{
+					while (remaining > 0)
+					{
+						Underlying.Read(Dignitrash, 0, checked((int)Math.Min(TrashSize, remaining)));
+						remaining -= TrashSize; // could go beyond 0, but it's signed so who cares
+					}
+				}
+			}
 		}
 
 		public override void Flush() { Underlying.Flush(); }
@@ -46,7 +62,8 @@ namespace DemoParser_Core.Streams
 		{
 			var data = new byte[count];
 			int offset = 0;
-			while (offset < count) {
+			while (offset < count)
+			{
 				int thisTime = Read(data, offset, count - offset);
 				if (thisTime == 0)
 					throw new EndOfStreamException();
