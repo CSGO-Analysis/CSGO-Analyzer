@@ -64,6 +64,14 @@ namespace DemoParser_Core.Streams.BitStream
 			return a;
 		}
 
+		public byte[] ReadBits(int bits)
+		{
+			var a = A.ReadBits(bits);
+			var b = B.ReadBits(bits);
+			Verify(a.SequenceEqual(b), true);
+			return a;
+		}
+
 		public byte ReadByte()
 		{
 			var a = A.ReadByte();
@@ -116,6 +124,14 @@ namespace DemoParser_Core.Streams.BitStream
 		{
 			var a = A.ReadUBitInt();
 			var b = B.ReadUBitInt();
+			Verify(a, b);
+			return a;
+		}
+
+		public float ReadFloat()
+		{
+			var a = A.ReadFloat();
+			var b = B.ReadFloat();
 			Verify(a, b);
 			return a;
 		}

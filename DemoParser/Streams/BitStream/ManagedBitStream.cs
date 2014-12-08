@@ -78,7 +78,22 @@ namespace DemoParser_Core.Streams.BitStream
 
 		public bool ReadBit()
 		{
-			return ReadInt(1) == 1;
+			bool bit = (Buffer[Offset / 8] & (1 << (Offset & 7))) != 0;
+			Advance(1);
+			return bit;
+		}
+
+		public byte[] ReadBits(int bits)
+		{
+			byte[] result = new byte[(bits + 7) / 8];
+
+			for (int i = 0; i < (bits / 8); i++)
+				result[i] = this.ReadByte();
+
+			if ((bits % 8) != 0)
+				result[bits / 8] = ReadByte(bits % 8);
+
+			return result;
 		}
 
 		public byte ReadByte()
@@ -98,6 +113,11 @@ namespace DemoParser_Core.Streams.BitStream
 			for (int i = 0; i < bytes; i++)
 				ret[i] = ReadByte();
 			return ret;
+		}
+
+		public float ReadFloat()
+		{
+			return BitConverter.ToSingle(ReadBytes(4), 0);
 		}
 
 		void IDisposable.Dispose()

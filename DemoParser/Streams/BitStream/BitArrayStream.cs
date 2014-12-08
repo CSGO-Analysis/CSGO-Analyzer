@@ -116,6 +116,24 @@ namespace DemoParser_Core.Streams.BitStream
 			return (((int)ReadInt(numBits)) << (32 - numBits)) >> (32 - numBits);
 		}
 
+		public float ReadFloat()
+		{
+			return BitConverter.ToSingle(ReadBytes(4), 0);
+		}
+
+		public byte[] ReadBits(int bits)
+		{
+			byte[] result = new byte[(bits + 7) / 8];
+
+			for (int i = 0; i < (bits / 8); i++)
+				result[i] = this.ReadByte();
+
+			if ((bits % 8) != 0)
+				result[bits / 8] = ReadByte(bits % 8);
+
+			return result;
+		}
+
 		void IDisposable.Dispose()
 		{
 			array = null;

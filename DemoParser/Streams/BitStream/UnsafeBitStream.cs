@@ -76,7 +76,9 @@ namespace DemoParser_Core.Streams.BitStream
 
 		public bool ReadBit()
 		{
-			return ReadInt(1) == 1;
+			bool bit = (Buffer[Offset / 8] & (1 << (Offset & 7))) != 0;
+			Advance(1);
+			return bit;
 		}
 
 		public byte ReadByte()
@@ -93,6 +95,13 @@ namespace DemoParser_Core.Streams.BitStream
 		public byte[] ReadBytes(int bytes)
 		{
 			var ret = new byte[bytes];
+			ReadBytes(ret, bytes);
+
+			return ret;
+		}
+
+		private void ReadBytes(byte[] ret, int bytes)
+		{
 			if (bytes < 3) {
 				for (int i = 0; i < bytes; i++)
 					ret[i] = ReadByte();
@@ -113,7 +122,6 @@ namespace DemoParser_Core.Streams.BitStream
 					offset += remainingBytes;
 				}
 			}
-			return ret;
 		}
 
 		private void HyperspeedCopyRound(int bytes, byte* retptr) // you spin me right round baby right round...
@@ -149,6 +157,24 @@ namespace DemoParser_Core.Streams.BitStream
 			BitStreamUtil.AssertMaxBits(32, numBits);
 			var result = (int)(((long)((*(ulong*)(PBuffer + ((Offset / 8) & ~3))) << ((8 * 8) - (Offset % (8 * 4)) - numBits))) >> ((8 * 8) - numBits));
 			Advance(numBits);
+			return result;
+		}
+
+		public float ReadFloat()
+		{
+			uint iResult = PeekInt(32);
+			Advance(32);
+			return *(float*)&iResult; // standard reinterpret cast
+		}
+
+		public byte[] ReadBits(int bits)
+		{
+			byte[] result = new byte[(bits + 7) / 8];
+			ReadBytes(result, bits / 8);
+
+			if ((bits % 8) != 0)
+				result[bits / 8] = ReadByte(bits % 8);
+
 			return result;
 		}
 	}

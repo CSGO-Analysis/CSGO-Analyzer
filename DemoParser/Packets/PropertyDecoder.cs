@@ -176,7 +176,7 @@ namespace DemoParser_Core.Packets
 			}
 			else if ((prop.Flags & SendPropertyFlags.NoScale) == SendPropertyFlags.NoScale)
 			{
-				result = BitConverter.ToSingle(reader.ReadBytes(4), 0);
+				result = reader.ReadFloat();
 				return true;
 			}
 			else if ((prop.Flags & SendPropertyFlags.Normal) == SendPropertyFlags.Normal)

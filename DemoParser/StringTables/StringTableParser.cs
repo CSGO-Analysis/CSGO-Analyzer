@@ -126,13 +126,16 @@ namespace DemoParser_Core.StringTables
 					if (entry == null)
 						entry = "";
 
+					if (history.Count > 31)
+						history.RemoveAt(0);
+
 					// Read in the user data.
 					byte[] userdata = new byte[0];
 					if (reader.ReadBit())
 					{
 						if (table.user_data_fixed_size)
 						{
-							userdata = reader.ReadBytes(table.user_data_size);
+							userdata = reader.ReadBits(table.user_data_size_bits);
 						}
 						else
 						{

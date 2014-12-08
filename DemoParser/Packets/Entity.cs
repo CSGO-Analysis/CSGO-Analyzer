@@ -20,35 +20,22 @@ namespace DemoParser_Core.Packets
         }
 
         public void ApplyUpdate(IBitStream reader)
-        {
-            IEnumerable<FlattenedPropEntry> updates = ReadUpdatedFields(reader);
+		{
+			bool newWay = reader.ReadBit();
+			int index = -1;
 
-			foreach (FlattenedPropEntry prop in updates)
-            {
-				Properties[prop.Prop.Name] = PropertyDecoder.DecodeProp(prop, reader);
-            }
-        }
+			var entries = new List<FlattenedPropEntry>();
 
-        private IEnumerable<FlattenedPropEntry> ReadUpdatedFields(IBitStream reader)
-        {
-            bool newWay = reader.ReadBit();
+			while ((index = ReadFieldIndex(reader, index, newWay)) != -1)
+			{
+				entries.Add(ServerClass.flattenedProps[index]);
+			}
 
-            List<int> fieldIndicies = new List<int>();
-
-            int index = -1;
-
-            while (true)
-            {
-                index = ReadFieldIndex(reader, index, newWay);
-
-                if (index != -1)
-                    fieldIndicies.Add(index);
-                else
-                    break;
-            }
-
-            return fieldIndicies.Select(a => ServerClass.flattenedProps[a]);
-        }
+			foreach (FlattenedPropEntry propertyEntry in entries)
+			{
+				Properties[propertyEntry.Prop.Name] = PropertyDecoder.DecodeProp(propertyEntry, reader);
+			}
+		}
 
 		// TODO check for protocol version support
         int ReadFieldIndex(IBitStream reader, int lastIndex, bool bNewWay)
