@@ -4,7 +4,6 @@ The goal of this fork is to separate demo parsing and data processing. To achiev
 
 Architecture
 ============
-
-DemoParser : CSGO .dem file parser triggering parsing events
-DemoParser-Model : IN PROGRESS - contains data models and repos/services to store or computer stats of a game
-DemoParser-UI : little WPF application use to see what's possible with this library
+- DemoParser : CSGO .dem file parser triggering parsing events
+- DemoParser-Model : IN PROGRESS - contains data models and repos/services to store or computer stats of a game
+- DemoParser-UI : little WPF application use to see what's possible with this library
