@@ -15,7 +15,6 @@ namespace DemoParser_Core
 	{
 		internal const string DEMO_HEADER_ID = "HL2DEMO";
 		internal const int DEMO_PROTOCOL = 4;
-		internal const int NETWORK_PROTOCOL_VERSION_MIN = 13401;
 
 		internal DataTableParser DataTables = new DataTableParser();
 		
@@ -68,9 +67,6 @@ namespace DemoParser_Core
 
 			if (header.DemoProtocol != DEMO_PROTOCOL)
 				throw new NotSupportedException("Invalid demo protocol - expecting " + DEMO_PROTOCOL);
-
-			if (header.NetworkProtocol < NETWORK_PROTOCOL_VERSION_MIN)
-				throw new NotSupportedException("Not supported network protocol version - expecting newer than " + NETWORK_PROTOCOL_VERSION_MIN);
 
 			Header = header;
 
