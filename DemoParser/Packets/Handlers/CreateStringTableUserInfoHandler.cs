@@ -14,12 +14,12 @@ namespace DemoParser_Core.Packets.Handlers
 			var create = message as CSVCMsg_CreateStringTable;
 
 			if (create != null)
-				parser.stringTables.Add((Messages.CSVCMsg_CreateStringTable)message);
+				parser.StringTablesParser.stringTables.Add((Messages.CSVCMsg_CreateStringTable)message);
 
 			if ((create == null) || (create.name != "userinfo"))
 				return false;
 
-            StringTableParser.ParseStringTableMessage(create, parser);
+			parser.StringTablesParser.ParseStringTableMessage(create, parser);
 
 			return true;
         }

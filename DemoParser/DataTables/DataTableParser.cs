@@ -11,9 +11,9 @@ namespace DemoParser_Core.DataTables
     class DataTableParser
     {
 		// each entity class keeps a data table that describes how to encode each of its member variables. These tables are called Send Tables and must have a unique name, usually like DT_EntityClassName.
-		public List<SendTable> DataTables = new List<SendTable>();
+		private List<SendTable> DataTables = new List<SendTable>();
 		public List<ServerClass> ServerClasses = new List<ServerClass>();
-		List<ExcludeEntry> CurrentExcludes = new List<ExcludeEntry>();
+		private List<ExcludeEntry> CurrentExcludes = new List<ExcludeEntry>();
 
         public DataTableParser()
         {

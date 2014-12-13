@@ -63,10 +63,10 @@ namespace DemoParser_Core.Packets.Handlers
 
         private Entity EnterPVS(IBitStream reader, int id, DemoParser parser)
         {
-			int serverClassID = (int)reader.ReadInt(parser.DataTables.ClassBits);
+			int serverClassID = (int)reader.ReadInt(parser.DataTablesParser.ClassBits);
 			reader.ReadInt(10); //Entity serial. 
 
-			ServerClass entityClass = parser.DataTables.ServerClasses[serverClassID];
+			ServerClass entityClass = parser.DataTablesParser.ServerClasses[serverClassID];
 			Entity newEntity = new Entity(id, entityClass);
 
 			parser.entities[newEntity.ID] = newEntity;

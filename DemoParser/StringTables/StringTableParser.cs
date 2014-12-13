@@ -8,9 +8,11 @@ using DemoParser_Core.Events;
 
 namespace DemoParser_Core.StringTables
 {
-    public static class StringTableParser
+    public class StringTableParser
     {
-		public static void ParsePacket(Stream stream, DemoParser parser)
+		internal List<CSVCMsg_CreateStringTable> stringTables = new List<CSVCMsg_CreateStringTable>();
+
+		public void ParsePacket(Stream stream, DemoParser parser)
         {
 			using (IBitStream reader = BitStreamUtil.Create(stream)) {
 				int numTables = reader.ReadByte();
@@ -23,7 +25,7 @@ namespace DemoParser_Core.StringTables
 			}
         }
 
-		public static void ParseStringTable(IBitStream reader, string tableName, DemoParser parser)
+		private void ParseStringTable(IBitStream reader, string tableName, DemoParser parser)
         {
 			int numStrings = (int)reader.ReadInt(16);
 
@@ -76,7 +78,7 @@ namespace DemoParser_Core.StringTables
 	        }
         }
 
-		public static void ParseStringTableMessage(CSVCMsg_CreateStringTable table, DemoParser parser)
+		public void ParseStringTableMessage(CSVCMsg_CreateStringTable table, DemoParser parser)
 		{
 			using (IBitStream reader = BitStreamUtil.Create(table.string_data))
 			{

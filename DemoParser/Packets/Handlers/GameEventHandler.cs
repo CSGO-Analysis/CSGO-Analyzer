@@ -12,31 +12,32 @@ namespace DemoParser_Core.Packets.Handlers
 {
     class GameEventHandler : IMessageParser
     {
+		// contains all game events and their description (name and type of properties)
+		private Dictionary<int, CSVCMsg_GameEventList.descriptor_t> gameEventdescriptors = new Dictionary<int, CSVCMsg_GameEventList.descriptor_t>();
 		private Dictionary<string, object> data = new Dictionary<string, object>();
 
         public bool TryApplyMessage(ProtoBuf.IExtensible message, DemoParser parser)
         {
             if (message is CSVCMsg_GameEventList)
             {
-				parser.GEH_Descriptors = new Dictionary<int, CSVCMsg_GameEventList.descriptor_t>();
+				gameEventdescriptors.Clear();
 
-				foreach (var d in ((CSVCMsg_GameEventList)message).descriptors) {
-					parser.GEH_Descriptors[d.eventid] = d;
+				foreach (var d in ((CSVCMsg_GameEventList)message).descriptors)
+				{
+					gameEventdescriptors[d.eventid] = d;
 				}
 
 				return true;
             }
-
-			var descriptors = parser.GEH_Descriptors;
-
-			if (descriptors == null)
+			
+			if (gameEventdescriptors.Count == 0)
 				return false;
 
 			var rawEvent = message as CSVCMsg_GameEvent;
 			if (rawEvent == null)
 				return false;
 
-            var eventDescriptor = descriptors[rawEvent.eventid];
+			var eventDescriptor = gameEventdescriptors[rawEvent.eventid];
 
 			switch (eventDescriptor.name) {
 				case "round_announce_match_start":

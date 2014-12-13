@@ -11,7 +11,7 @@ namespace DemoParser_Core.Packets.Handlers
         public bool TryApplyMessage(ProtoBuf.IExtensible message, DemoParser parser)
         {
 			if (message is Messages.CSVCMsg_CreateStringTable) {
-				parser.stringTables.Add((Messages.CSVCMsg_CreateStringTable)message);
+				parser.StringTablesParser.stringTables.Add((Messages.CSVCMsg_CreateStringTable)message);
 				return true;
 			}
 

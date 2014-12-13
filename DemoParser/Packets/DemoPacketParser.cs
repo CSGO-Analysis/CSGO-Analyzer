@@ -9,15 +9,8 @@ using System.Reflection;
 
 namespace DemoParser_Core.Packets
 {
-	public static class DemoPacketParser
+	public class DemoPacketParser
     {
-		private static readonly IEnumerable<IMessageParser> Parsers = (
-			from type in Assembly.GetExecutingAssembly().GetTypes()
-			where type.GetInterfaces().Contains(typeof(IMessageParser))
-			let parser = (IMessageParser)type.GetConstructor(new Type[0]).Invoke(null)
-			orderby -parser.Priority
-			select parser).ToArray();
-
 		private static readonly Dictionary<string, Type> MessagesCSVC = (
 			from type in Assembly.GetExecutingAssembly().GetTypes()
 			where type.FullName.Contains("Messages.CSVCMsg_")
@@ -28,12 +21,15 @@ namespace DemoParser_Core.Packets
 			where type.FullName.Contains("Messages.CNETMsg_")
 			select type).ToDictionary(type => type.FullName);
 
+		// TODO Thread-safe
+		private static GameEventHandler gameEventHandler = new GameEventHandler();
+
 		private static readonly Dictionary<Type, IMessageParser> ParseType = new Dictionary<Type, IMessageParser> {
 			//{ typeof(CSVCMsg_CreateStringTable), new GenericCreateStringTablesHandler() },
 			{ typeof(CSVCMsg_CreateStringTable), new CreateStringTableUserInfoHandler() },
 			{ typeof(CSVCMsg_UpdateStringTable), new UpdateStringTableUserInfoHandler() },
-			{ typeof(CSVCMsg_GameEventList), new GameEventHandler() },
-			{ typeof(CSVCMsg_GameEvent), new GameEventHandler() },
+			{ typeof(CSVCMsg_GameEventList), gameEventHandler },
+			{ typeof(CSVCMsg_GameEvent), gameEventHandler },
 			//{ typeof(CSVCMsg_UserMessage), new UserMessageHandler() },
 			{ typeof(CSVCMsg_PacketEntities), new PacketEntitiesHandler() }
 		};
@@ -42,8 +38,8 @@ namespace DemoParser_Core.Packets
 		/// Read protobuf messages
 		/// </summary>
 		/// <param name="stream"></param>
-		/// <param name="demo"></param>
-		public static void ParsePacket(Stream stream, DemoParser demo)
+		/// <param name="parser"></param>
+		public void ParsePacket(Stream stream, DemoParser parser)
         {
 			var reader = new BinaryReader(stream);
 
@@ -75,14 +71,8 @@ namespace DemoParser_Core.Packets
 				//This method apply message only to Handler able to deal with that type of message
 				if (ParseType.ContainsKey(toParse))
 				{
-					ParseType[toParse].TryApplyMessage(message, demo);
+					ParseType[toParse].TryApplyMessage(message, parser);
 				}
-
-				//This method give packet to all parsers (without determining if its a packet usable by the parser)
-                /*foreach (IMessageParser parser in Parsers)
-					if (parser.TryApplyMessage(message, demo) && (parser.Priority > 0))
-						break;
-				*/
 			}
         }
     }

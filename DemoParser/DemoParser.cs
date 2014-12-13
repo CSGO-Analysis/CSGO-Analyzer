@@ -16,23 +16,20 @@ namespace DemoParser_Core
 		internal const string DEMO_HEADER_ID = "HL2DEMO";
 		internal const int DEMO_PROTOCOL = 4;
 
-		internal DataTableParser DataTables = new DataTableParser();
 		
-		// used for "userinfo"
-		public List<CSVCMsg_CreateStringTable> stringTables = new List<CSVCMsg_CreateStringTable>();
-
-		// contains all game events and their description (name and type of properties)
-		internal Dictionary<int, CSVCMsg_GameEventList.descriptor_t> GEH_Descriptors = null;
-
-		//#####################################################################################################
 		private BinaryReader reader;
+
+		internal DemoPacketParser DemoPacketsParser;
+		internal DataTableParser DataTablesParser;
+		internal StringTableParser StringTablesParser;
+
 		public EventsManager EventsManager { get; private set; }
 
 		public DemoHeader Header { get; private set; }
 
 		internal Dictionary<int, Entity> entities = new Dictionary<int, Entity>(); // Key = entityId
 		internal Dictionary<int, Team> teams = new Dictionary<int, Team>(3); // Key = teamNum
-		internal Dictionary<int, Player> players = new Dictionary<int, Player>(12); // Key = userId
+		internal Dictionary<int, Player> players = new Dictionary<int, Player>(16); // Key = userId
 
 		public IReadOnlyList<Team> Teams { get { return teams.Values.ToList(); } }
 		public IReadOnlyList<Player> Players { get { return players.Values.ToList(); } }
@@ -40,12 +37,16 @@ namespace DemoParser_Core
 		public int CurrentTick { get; private set; }
 		public double CurrentTime { get { return (Header != null) ? (this.CurrentTick * Header.TickTime) : 0; } }
 
-		//#####################################################################################################	
 
 		public DemoParser(Stream input)
 		{
-			this.reader = new BinaryReader(input);
-			this.EventsManager = new EventsManager();
+			reader = new BinaryReader(input);
+
+			DemoPacketsParser = new DemoPacketParser();
+			DataTablesParser = new DataTableParser();
+			StringTablesParser = new StringTableParser();
+
+			EventsManager = new EventsManager();
 		}
 
 		public void ParseDemo(bool fullParse)
@@ -91,11 +92,11 @@ namespace DemoParser_Core
 					break;
 				case DemoMessageType.DataTables:
 					using (var volvo = reader.ReadVolvoPacket())
-						DataTables.ParsePacket(volvo);
+						DataTablesParser.ParsePacket(volvo);
 					break;
 				case DemoMessageType.StringTables:
 					using (var volvo = reader.ReadVolvoPacket())
-						StringTableParser.ParsePacket(volvo, this);
+						StringTablesParser.ParsePacket(volvo, this);
 					break;
 				case DemoMessageType.UserCommand:
 					reader.ReadInt32();
@@ -108,7 +109,7 @@ namespace DemoParser_Core
 					reader.ReadInt32(); // SeqNrOut
 
 					using (var volvo = reader.ReadVolvoPacket())
-						DemoPacketParser.ParsePacket(volvo, this);
+						DemoPacketsParser.ParsePacket(volvo, this);
 					break;
 				default:
 					throw new Exception("Can't handle MessageType " + messageType);
