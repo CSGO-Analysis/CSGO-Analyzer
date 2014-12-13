@@ -7,6 +7,8 @@ namespace DemoParser_Core.Entities
 	{
 		internal Entity Entity;
 
+		public int Id { get { return Entity.ID; } }
+
 		public int Num { get; internal set; }
 
 		public string Name { get; internal set; }
