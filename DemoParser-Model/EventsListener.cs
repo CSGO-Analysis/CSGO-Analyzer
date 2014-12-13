@@ -72,6 +72,7 @@ namespace DemoParser_Model
 		void eventsManager_MatchStarted(object sender, MatchStartedEventArgs e)
 		{
 			this.game.IsStarted = true;
+			game.Rounds.Clear();
 			game.Rounds.Add(new Round());
 		}
 
