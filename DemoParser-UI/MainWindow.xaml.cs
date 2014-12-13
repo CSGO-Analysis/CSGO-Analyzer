@@ -139,6 +139,9 @@ namespace DemoParser_UI
 
 				while (demoParser.ParseNextTick() && !bw.CancellationPending)
 				{
+					if (demoParser.Header.PlaybackTicks == 0)
+						continue;
+
 					// report the progress in percent
 					b.ReportProgress(Convert.ToInt32(((float)demoParser.CurrentTick / demoParser.Header.PlaybackTicks) * 100), demoParser);
 					// ability to pause/resume thread
@@ -242,6 +245,9 @@ namespace DemoParser_UI
 		{
 			Dispatcher.Invoke(new Action(() =>
 				{
+					if (Double.IsNaN(demoParser.CurrentTime))
+						return;
+
 					this.textblockContent.Text += "Round started " + TimeSpan.FromSeconds(demoParser.CurrentTime).ToString(@"hh\:mm\:ss") + Environment.NewLine;
 					this.scrollViewer.ScrollToBottom();
 
@@ -254,6 +260,9 @@ namespace DemoParser_UI
 		{
 			Dispatcher.Invoke(new Action(() =>
 			{
+				if (Double.IsNaN(demoParser.CurrentTime))
+					return;
+
 				this.textblockContent.Text += "Round ended (" + e.Message + ") " + TimeSpan.FromSeconds(demoParser.CurrentTime).ToString(@"hh\:mm\:ss") + Environment.NewLine;
 				this.scrollViewer.ScrollToBottom();
 			}

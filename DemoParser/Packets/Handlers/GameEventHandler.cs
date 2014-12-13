@@ -146,11 +146,13 @@ namespace DemoParser_Core.Packets.Handlers
 
 					if (parser.players.ContainsKey((int)data["userid"]) && parser.players.ContainsKey((int)data["attacker"]))
 					{
+						string weapon_itemid = (string)data.GetValueOrDefault<string, object>("weapon_itemid", string.Empty);
+
 						PlayerKilledEventArgs kill = new PlayerKilledEventArgs();
 						kill.Victim = parser.players[(int)data["userid"]];
 						kill.Killer = parser.players[(int)data["attacker"]];
 						kill.Headshot = (bool)data["headshot"];
-						kill.Weapon = new Equipment((string)data["weapon"], (string)data["weapon_itemid"]);
+						kill.Weapon = new Equipment((string)data["weapon"], weapon_itemid);
 						kill.PenetratedObjects = (int)data["penetrated"];
 
 						if (parser.players.ContainsKey((int)data["assister"]))
