@@ -19,7 +19,7 @@ namespace DemoParser_Core.Packets.Handlers
 			if ((create == null) || (create.name != "userinfo"))
 				return false;
 
-            StringTableParser.ParseStringTableUpdate(create, parser);
+            StringTableParser.ParseStringTableMessage(create, parser);
 
 			return true;
         }

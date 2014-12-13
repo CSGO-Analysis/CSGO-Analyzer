@@ -7,15 +7,15 @@ namespace DemoParser_Core.Packets.Handlers
     {
 		public bool TryApplyMessage(ProtoBuf.IExtensible message, DemoParser parser)
         {
-			var update = message as CSVCMsg_UpdateStringTable;
-			if ((update == null) || (parser.stringTables[update.table_id].name != "userinfo"))
+			var stringTableUpdate = message as CSVCMsg_UpdateStringTable;
+			if ((stringTableUpdate == null) || (parser.stringTables[stringTableUpdate.table_id].name != "userinfo"))
 				return false;
 
-            CSVCMsg_CreateStringTable create = parser.stringTables[update.table_id];
-            create.num_entries = update.num_changed_entries;
-            create.string_data = update.string_data;
+            CSVCMsg_CreateStringTable stringTableCreate = parser.stringTables[stringTableUpdate.table_id];
+            stringTableCreate.num_entries = stringTableUpdate.num_changed_entries;
+            stringTableCreate.string_data = stringTableUpdate.string_data;
 
-            StringTableParser.ParseStringTableUpdate(create, parser);
+            StringTableParser.ParseStringTableMessage(stringTableCreate, parser);
 
 			return true;
         }

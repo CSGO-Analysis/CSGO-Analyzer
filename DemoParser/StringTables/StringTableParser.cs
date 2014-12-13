@@ -18,12 +18,12 @@ namespace DemoParser_Core.StringTables
 				for (int i = 0; i < numTables; i++) {
 					string tableName = reader.ReadString();
 
-					ParseStringTable(reader, tableName == "userinfo", parser);
+					ParseStringTable(reader, tableName, parser);
 				}
 			}
         }
 
-		public static void ParseStringTable(IBitStream reader, bool isUserInfo, DemoParser parser)
+		public static void ParseStringTable(IBitStream reader, string tableName, DemoParser parser)
         {
 			int numStrings = (int)reader.ReadInt(16);
 
@@ -40,11 +40,17 @@ namespace DemoParser_Core.StringTables
 
                     byte[] data = reader.ReadBytes(userDataSize);
 
-                    if (isUserInfo && data.Length >= 340)
-                    {
-                        PlayerInfo info = PlayerInfo.ParseFrom(new BinaryReader(new MemoryStream(data)));
-						UpdatePlayers(info, parser);
-                    }
+					switch (tableName)
+					{
+						case "userinfo":
+							PlayerInfo info = PlayerInfo.ParseFrom(new BinaryReader(new MemoryStream(data)));
+							UpdatePlayers(info, parser);
+							break;
+						case "instancebaseline": // TODO implement
+							//int classid = int.Parse(stringName);
+							//parser.instanceBaseline[classid] = data;
+							break;
+					}
                 }
             }
 
@@ -70,7 +76,7 @@ namespace DemoParser_Core.StringTables
 	        }
         }
 
-		public static void ParseStringTableUpdate(CSVCMsg_CreateStringTable table, DemoParser parser)
+		public static void ParseStringTableMessage(CSVCMsg_CreateStringTable table, DemoParser parser)
 		{
 			using (IBitStream reader = BitStreamUtil.Create(table.string_data))
 			{
