@@ -66,12 +66,12 @@ namespace DemoParser_Model
 			game.Map = e.Header.MapName;
 			game.Duration = e.Header.PlaybackTime;
 			game.Date = DateTime.Now;
-			game.Rounds = new List<Round>();
 		}
 
 		void eventsManager_MatchStarted(object sender, MatchStartedEventArgs e)
 		{
-			this.game.IsStarted = true;
+			game.IsStarted = true;
+
 			game.Rounds.Clear();
 			game.Rounds.Add(new Round());
 		}
@@ -94,7 +94,7 @@ namespace DemoParser_Model
 		{
 			if (game.IsStarted)
 			{
-				game.Rounds.Last().Winner = this.game.GetTeam(e.Team.Id);
+				game.Rounds.Last().Winner = game.GetTeam(e.Team.Id);
 				game.Rounds.Last().Reason = e.Reason;
 				//game.Rounds.Last().Duration = e.
 			}
@@ -104,7 +104,8 @@ namespace DemoParser_Model
 		{
 			if (game.IsStarted)
 			{
-				game.Rounds.Last().Mvp = this.game.GetPlayer(e.Player.SteamID);
+				game.Rounds.Last().Mvp = game.GetPlayer(e.Player.SteamID);
+				game.Rounds.Last().Reason = e.Reason;
 			}
 		}
 
@@ -113,18 +114,16 @@ namespace DemoParser_Model
 			if (game.IsStarted)
 			{
 				Frag frag = new Frag();
-				frag.Killer = this.game.GetPlayer(e.Killer.SteamID);
-				frag.Victim = this.game.GetPlayer(e.Victim.SteamID);
-				frag.Assist = (e.Assist != null) ? this.game.GetPlayer(e.Assist.SteamID) : null;
+				frag.Killer = game.GetPlayer(e.Killer.SteamID);
+				frag.Victim = game.GetPlayer(e.Victim.SteamID);
+				frag.Assist = (e.Assist != null) ? game.GetPlayer(e.Assist.SteamID) : null;
 				frag.Headshot = e.Headshot;
 				frag.Penetrated = (e.PenetratedObjects > 0) ? true : false;
 				frag.Weapon = e.Weapon.OriginalString;
 
 				game.Rounds.Last().Frags.Add(frag);
-
-				this.game.GetPlayer(e.Killer.SteamID).Frags.Add(frag);
-
-				this.game.Frags.Add(frag);
+				game.GetPlayer(e.Killer.SteamID).Frags.Add(frag);
+				game.Frags.Add(frag);
 			}
 		}
 	}

@@ -20,21 +20,21 @@
 			</Grid>
 		</GroupBox>
 		<Label x:Name="labelSpeed" HorizontalAlignment="Left" Margin="204,0,0,6" Width="186" Height="26" VerticalAlignment="Bottom"/>
-		<TabControl Margin="10,38,10,98">
-			<TabItem Header="Console log">
+		<TabControl x:Name="tabControl" Margin="10,38,10,98">
+			<TabItem x:Name="tabItemConsole" Header="Console log">
 				<Grid Background="#FFE5E5E5">
 					<ScrollViewer x:Name="scrollViewer">
 						<TextBlock x:Name="textblockContent" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible" VerticalAlignment="Top" HorizontalAlignment="Left" Text="{Binding Path=Console, UpdateSourceTrigger=PropertyChanged}"/>
 					</ScrollViewer>
 				</Grid>
 			</TabItem>
-			<TabItem Header="Data">
+			<TabItem x:Name="tabItemData" Header="Data" IsEnabled="False">
 				<Grid Background="#FFE5E5E5">
 					<DataGrid x:Name="dataGridTeams" ItemsSource="{Binding demoParser.Teams, Mode=OneWay}" Height="93" VerticalAlignment="Top" AlternatingRowBackground="WhiteSmoke" />
 					<DataGrid x:Name="dataGridPlayers" ItemsSource="{Binding demoParser.Players, Mode=OneWay}" Margin="0,98,0,0" VerticalAlignment="Top" SelectionMode="Extended" SelectionUnit="FullRow" AlternatingRowBackground="WhiteSmoke" />
 				</Grid>
 			</TabItem>
-			<TabItem Header="ScoreBoard">
+			<TabItem x:Name="tabItemScoreboard" Header="ScoreBoard" IsEnabled="False">
 				<Grid Background="#FFE5E5E5">
 					<DataGrid x:Name="dataGridScoreboard" VerticalAlignment="Top" SelectionMode="Extended" SelectionUnit="FullRow" AlternatingRowBackground="WhiteSmoke" />
 				</Grid>

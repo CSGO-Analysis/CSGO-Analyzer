@@ -62,6 +62,10 @@ namespace DemoParser_UI
 			this.lastTick = 0;
 			this.avgTick = 0;
 			this.nbSeconds = 0;
+
+			this.tabItemData.IsEnabled = false;
+			this.tabItemScoreboard.IsEnabled = false;
+			this.tabControl.SelectedItem = this.tabItemConsole;
 		}
 
 		private void InitParser(Stream demoFile)
@@ -76,6 +80,7 @@ namespace DemoParser_UI
 			demoParser.EventsManager.RoundMvp += demoParser_RoundMvp;
 			//demoParser.EventsManager.PlayerChat += demoParser_PlayerChat;
 			//demoParser.EventsManager.WeaponFired += demoParser_WeaponFired;
+			demoParser.EventsManager.TeamParsed += demoParser_TeamParsed;
 
 			eventsListener = new EventsListener(this.demoParser);
 
@@ -170,6 +175,8 @@ namespace DemoParser_UI
 				this.dataGridScoreboard.ItemsSource = eventsListener.scoreBoard.GetLines();
 				SortScoreboard();
 				this.buttonPause.IsEnabled = false;
+				this.tabItemData.IsEnabled = true;
+				this.tabItemScoreboard.IsEnabled = true;
 			});
 
 			bw.Disposed += new EventHandler(
@@ -237,6 +244,8 @@ namespace DemoParser_UI
 				{
 					this.textblockContent.Text += "Round started " + TimeSpan.FromSeconds(demoParser.CurrentTime).ToString(@"hh\:mm\:ss") + Environment.NewLine;
 					this.scrollViewer.ScrollToBottom();
+
+					UpdateTeamsData();
 				}
 			));
 		}
@@ -247,8 +256,6 @@ namespace DemoParser_UI
 			{
 				this.textblockContent.Text += "Round ended (" + e.Message + ") " + TimeSpan.FromSeconds(demoParser.CurrentTime).ToString(@"hh\:mm\:ss") + Environment.NewLine;
 				this.scrollViewer.ScrollToBottom();
-
-				UpdateTeamsData();
 			}
 			));
 		}
@@ -287,6 +294,28 @@ namespace DemoParser_UI
 					this.textblockContent.Text += String.Format("Round MVP : {0}; reason: {1}", e.Player.Name, e.Reason) + Environment.NewLine;
 					this.scrollViewer.ScrollToBottom();
 				}
+			));
+		}
+
+		void demoParser_TeamParsed(object sender, TeamParsedEventArgs e)
+		{
+			Dispatcher.Invoke(new Action(() =>
+			{
+				if (e.Team.Side != DemoParser_Core.Entities.Team.TeamSide.Spectator)
+				{
+					if (e.Team.Num == 2)
+					{
+						this.imageFlag1.Source = new BitmapImage(new Uri("Resources/Flags/" + e.Team.Flag + ".png", UriKind.Relative));
+						this.labelTeam1.Content = e.Team.Name;
+					}
+					else if (e.Team.Num == 3)
+					{
+						this.imageFlag2.Source = new BitmapImage(new Uri("Resources/Flags/" + e.Team.Flag + ".png", UriKind.Relative));
+						this.labelTeam2.Content = e.Team.Name;
+					}
+
+				}
+			}
 			));
 		}
 		#endregion
