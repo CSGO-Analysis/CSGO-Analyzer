@@ -51,7 +51,9 @@ namespace DemoParser_Core.Entities
 			if (entity.Properties.ContainsKey("m_vecOrigin"))
 			{
 				this.Position = (Vector)entity.Properties["m_vecOrigin"];
-				this.Position.Z = (float)entity.Properties.GetValueOrDefault("m_vecOrigin[2]", 0);
+
+				if (entity.Properties.ContainsKey("m_vecOrigin[2]"))
+					this.Position.Z = (float)entity.Properties.GetValueOrDefault("m_vecOrigin[2]", 0);
 
 				if (entity.Properties.ContainsKey("m_iHealth"))
 					this.Health = (int)entity.Properties["m_iHealth"];
