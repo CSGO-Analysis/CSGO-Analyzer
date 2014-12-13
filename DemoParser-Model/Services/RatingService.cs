@@ -16,17 +16,22 @@ namespace DemoParser_Model.Services
 		/// <param name="game"></param>
 		/// <param name="player"></param>
 		/// <returns></returns>
-		public double ComputeRating(Game game, Player player)
+		public double ComputeRating(int numberOfRounds, PlayerRatingData playerData)
 		{
-			PlayerRatingData playerData = ComputeRatingData(game, player);
-			
-			int Rounds = game.Rounds.Count();
+			int Rounds = numberOfRounds;
 
 			double KillRating = playerData.Kills / (double)Rounds / (double)AverageKPR; // Kills/Rounds/AverageKPR
 			double SurvivalRating = (Rounds - playerData.Deaths) / (double)Rounds / (double)AverageSPR; // (Rounds-Deaths)/Rounds/AverageSPR
 			double RoundsWithMultipleKillsRating = (playerData.Kill1 + 4 * playerData.Kill2 + 9 * playerData.Kill3 + 16 * playerData.Kill4 + 25 * playerData.Kill5) / (double)Rounds / (double)AverageRMK; // (1K + 4*2K + 9*3K + 16*4K + 25*5K)/Rounds/AverageRMK 
 
-			return Math.Round((KillRating + 0.7 * SurvivalRating + RoundsWithMultipleKillsRating) / 2.7, 2);	
+			return Math.Round((KillRating + 0.7 * SurvivalRating + RoundsWithMultipleKillsRating) / 2.7, 2);
+		}
+
+		public double ComputeRating(Game game, Player player)
+		{
+			PlayerRatingData playerData = ComputeRatingData(game, player);
+
+			return ComputeRating(game.Rounds.Count, playerData);
 		}
 
 		public PlayerRatingData ComputeRatingData(Game game, Player player)
