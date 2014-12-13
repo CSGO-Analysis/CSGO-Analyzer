@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoParser-UI", "DemoParser
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoParser-Model", "DemoParser-Model\DemoParser-Model.csproj", "{2914F7C3-8329-4B3A-B170-C13044D6DE4F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PacketInspector", "PacketInspector\PacketInspector.csproj", "{E1199FFC-F420-49A8-B22E-45A0BF556FDB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{2914F7C3-8329-4B3A-B170-C13044D6DE4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2914F7C3-8329-4B3A-B170-C13044D6DE4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2914F7C3-8329-4B3A-B170-C13044D6DE4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1199FFC-F420-49A8-B22E-45A0BF556FDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1199FFC-F420-49A8-B22E-45A0BF556FDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1199FFC-F420-49A8-B22E-45A0BF556FDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1199FFC-F420-49A8-B22E-45A0BF556FDB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
