@@ -53,10 +53,6 @@ namespace DemoParser_Core.Packets.Handlers
 						if (reader.ReadBit())
 						{
 							parser.entities.Remove(currentEntity);
-
-							// TODO vérifier pourquoi on retire le joueur : disconnect ? retirer aussi de teams ? voir C++
-							if (parser.players.ContainsKey(currentEntity))
-								parser.players.Remove(currentEntity);
 						}
 					}
 				}
