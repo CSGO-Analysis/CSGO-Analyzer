@@ -4,9 +4,12 @@ namespace DemoParser_Core.Events
 {
 	public class EventsManager
 	{
-		#region Events
-		public event EventHandler<TickDoneEventArgs> TickDone;
+		#region 
 		public event EventHandler<HeaderParsedEventArgs> HeaderParsed;
+
+		public event EventHandler<TickDoneEventArgs> TickDone;
+		public event EventHandler<TeamParsedEventArgs> TeamParsed;
+		public event EventHandler<PlayerParsedEventArgs> PlayerParsed;
 
 		#region GameEvents
 		public event EventHandler<MatchStartedEventArgs> MatchStarted;
@@ -49,6 +52,19 @@ namespace DemoParser_Core.Events
 			if (HeaderParsed != null)
 				HeaderParsed(this, arg);
 		}
+
+		internal void RaiseTeamParsed(TeamParsedEventArgs arg)
+		{
+			if (TeamParsed != null)
+				TeamParsed(this, arg);
+		}
+
+		internal void RaisePlayerParsed(PlayerParsedEventArgs arg)
+		{
+			if (PlayerParsed != null)
+				PlayerParsed(this, arg);
+		}
+
 		#endregion
 
 		#region GameEventCaller
@@ -106,7 +122,6 @@ namespace DemoParser_Core.Events
 			if (WeaponFired != null)
 				WeaponFired(this, fire);
 		}
-
 
 		internal void RaiseSmokeStart(SmokeEventArgs args)
 		{

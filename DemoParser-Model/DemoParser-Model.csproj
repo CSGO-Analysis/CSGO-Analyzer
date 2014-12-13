@@ -39,9 +39,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EventsListener.cs" />
+    <Compile Include="Frag.cs" />
+    <Compile Include="Game.cs" />
+    <Compile Include="Models\PlayerRatingData.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Round.cs" />
+    <Compile Include="Models\ScoreBoard.cs" />
+    <Compile Include="Models\ScoreBoardLine.cs" />
+    <Compile Include="Services\IRatingService.cs" />
+    <Compile Include="Services\IScoreBoardService.cs" />
+    <Compile Include="Services\RatingService.cs" />
+    <Compile Include="Services\ScoreBoardService.cs" />
+    <Compile Include="Team.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{cd0b93a7-ce91-4d0b-8d6b-671ced9fab87}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DemoParser\DemoParser-Core.csproj">
       <Project>{acb37cb0-3d65-4a1d-9740-8f635e3e822f}</Project>
       <Name>DemoParser-Core</Name>

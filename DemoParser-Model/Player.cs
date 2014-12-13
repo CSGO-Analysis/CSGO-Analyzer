@@ -9,7 +9,7 @@ namespace DemoParser_Model
 	public class Player
 	{
 		public string Name { get; set; }
-		public long SteamId { get; set; }
+		public long SteamId { get; set; } // Unique
 		public Team Team { get; set; }
 		public List<Frag> Frags { get; set; }
 

@@ -4,9 +4,7 @@ using System;
 namespace DemoParser_Core.Events
 {
 	public abstract class GameEventArgs : EventArgs
-	{
-
-	}
+	{ }
 
     public class HeaderParsedEventArgs : EventArgs
     {
@@ -19,12 +17,30 @@ namespace DemoParser_Core.Events
     }
 
     public class TickDoneEventArgs : EventArgs
-    {
-    }
+    { }
+
+	public class TeamParsedEventArgs : EventArgs
+	{
+		public Team Team { get; internal set; }
+
+		public TeamParsedEventArgs(Team team)
+		{
+			this.Team = team;
+		}
+	}
+
+	public class PlayerParsedEventArgs : EventArgs
+	{
+		public Player Player { get; internal set; }
+
+		public PlayerParsedEventArgs(Player player)
+		{
+			this.Player = player;
+		}
+	}
 
     public class MatchStartedEventArgs : EventArgs
-    {
-	}
+    { }
 
 	public class MatchEndedEventArgs : EventArgs
 	{ }
@@ -37,8 +53,7 @@ namespace DemoParser_Core.Events
 	}
 
 	public class RoundStartedEventArgs : EventArgs
-	{
-	}
+	{ }
 
 	public class RoundEndedEventArgs : EventArgs
 	{

@@ -14,7 +14,12 @@ namespace DemoParser_Model
 		public Player Mvp { get; set; }
 		public List<Frag> Frags { get; set; }
 
-		public Round(float duration, Team winner, int reason, Player mvp)
+		public Round()
+		{
+			this.Frags = new List<Frag>();
+		}
+
+		public Round(float duration, Team winner, int reason, Player mvp) : this()
 		{
 			this.Duration = duration;
 			this.Winner = winner;

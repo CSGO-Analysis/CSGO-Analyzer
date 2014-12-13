@@ -4,6 +4,7 @@ using DemoParser_Core.Entities;
 using DemoParser_Core.Messages;
 using System.Diagnostics;
 using System.IO;
+using DemoParser_Core.Events;
 
 namespace DemoParser_Core.Packets.Handlers
 {
@@ -96,7 +97,9 @@ namespace DemoParser_Core.Packets.Handlers
 
 				if (!parser.teams.ContainsKey(teamNum))
 				{
-					parser.teams.Add(teamNum, new Team(entity));
+					Team team = new Team(entity);
+					parser.teams.Add(teamNum, team);
+					parser.EventsManager.RaiseTeamParsed(new TeamParsedEventArgs(team));
 				}
 				parser.teams[teamNum].Update(entity);
 			}

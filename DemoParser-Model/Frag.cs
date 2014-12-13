@@ -15,6 +15,8 @@ namespace DemoParser_Model
 		public bool Penetrated { get; set; }
 		public string Weapon { get; set; }
 
+		public Frag() { }
+
 		public Frag(Player killer, Player victim, bool headshot, bool penetrated, string weapon)
 		{
 			this.Killer = killer;

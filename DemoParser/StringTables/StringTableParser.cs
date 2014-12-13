@@ -4,6 +4,7 @@ using DemoParser_Core.Messages;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using DemoParser_Core.Events;
 
 namespace DemoParser_Core.StringTables
 {
@@ -161,7 +162,9 @@ namespace DemoParser_Core.StringTables
 		{
 			if (!parser.players.ContainsKey(playerInfo.UserID))
 			{
-				parser.players[playerInfo.UserID] = new Player(playerInfo);
+				Player player = new Player(playerInfo);
+				parser.players[playerInfo.UserID] = player;
+				parser.EventsManager.RaisePlayerParsed(new PlayerParsedEventArgs(player));
 			}
 			else
 			{

@@ -341,6 +341,10 @@
       <Project>{cd0b93a7-ce91-4d0b-8d6b-671ced9fab87}</Project>
       <Name>Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DemoParser-Model\DemoParser-Model.csproj">
+      <Project>{2914f7c3-8329-4b3a-b170-c13044d6de4f}</Project>
+      <Name>DemoParser-Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DemoParser\DemoParser-Core.csproj">
       <Project>{acb37cb0-3d65-4a1d-9740-8f635e3e822f}</Project>
       <Name>DemoParser-Core</Name>

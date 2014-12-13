@@ -1,16 +1,19 @@
 ﻿using DemoParser_Core;
 using DemoParser_Core.Entities;
 using DemoParser_Core.Events;
+using DemoParser_Model;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading;
 using System.Timers;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using Timers = System.Timers.Timer;
 
@@ -22,6 +25,7 @@ namespace DemoParser_UI
     public partial class MainWindow : Window
     {
         private DemoParser demoParser;
+		private EventsListener eventsListener;
 
 		private ManualResetEvent locker = new ManualResetEvent(true);
 		private BackgroundWorker bw;
@@ -72,6 +76,9 @@ namespace DemoParser_UI
 			demoParser.EventsManager.RoundMvp += demoParser_RoundMvp;
 			//demoParser.EventsManager.PlayerChat += demoParser_PlayerChat;
 			//demoParser.EventsManager.WeaponFired += demoParser_WeaponFired;
+
+			eventsListener = new EventsListener(this.demoParser);
+
 			matchInProgress = true;
 		}
 
@@ -159,7 +166,9 @@ namespace DemoParser_UI
 				this.textblockContent.Text += "Finished!" + Environment.NewLine;
 				this.textblockContent.Text += "Time: " + t1.Elapsed.ToString(@"ss\.fffffff");
 				this.dataGridTeams.ItemsSource = demoParser.Teams;
-				this.dataGridScoreboard.ItemsSource = demoParser.Players;
+				this.dataGridPlayers.ItemsSource = demoParser.Players;
+				this.dataGridScoreboard.ItemsSource = eventsListener.scoreBoard.GetLines();
+				SortScoreboard();
 				this.buttonPause.IsEnabled = false;
 			});
 
@@ -282,6 +291,16 @@ namespace DemoParser_UI
 		}
 		#endregion
 
+		private void SortScoreboard()
+		{
+			CollectionView dataView = (CollectionView)CollectionViewSource.GetDefaultView(this.dataGridScoreboard.ItemsSource);
+			//clear the existing sort order
+			dataView.SortDescriptions.Clear();
+			//create a new sort order for the sorting that is done lastly
+			dataView.SortDescriptions.Add(new SortDescription("Rating", ListSortDirection.Descending));
+			//refresh the view which in turn refresh the grid
+			dataView.Refresh();
+		}
 
 		private void UpdateTeamsData()
 		{
