@@ -51,6 +51,11 @@ namespace DemoParser_Model.Services
 						line.Deaths++;
 					}
 				}
+
+				if (round.Mvp.SteamId == player.SteamId)
+				{
+					line.Mvp++;
+				}
 			}
 
 			line.Rating = ratingService.ComputeRating(game, player);
