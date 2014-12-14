@@ -170,7 +170,7 @@ namespace DemoParser_Core.Packets.Handlers
 					MapData(eventDescriptor, rawEvent);
 
 					BombEventArgs bombEventArgs = new BombEventArgs();
-					bombEventArgs.Player = parser.Players[(int)data["userid"]];
+					bombEventArgs.Player = parser.players[(int)data["userid"]];
 					bombEventArgs.BombSite = (int)data["site"]; //entity index of the bombsite.
 
 					parser.EventsManager.RaiseBombPlanted(bombEventArgs);
@@ -179,7 +179,7 @@ namespace DemoParser_Core.Packets.Handlers
 					MapData(eventDescriptor, rawEvent);
 
 					BombEventArgs bombEventArg = new BombEventArgs();
-					bombEventArg.Player = parser.Players[(int)data["userid"]];
+					bombEventArg.Player = parser.players[(int)data["userid"]];
 					bombEventArg.BombSite = (int)data["site"]; //entity index of the bombsite.
 
 					parser.EventsManager.RaiseBombDefused(bombEventArg);
@@ -188,7 +188,7 @@ namespace DemoParser_Core.Packets.Handlers
 					MapData(eventDescriptor, rawEvent);
 
 					BombEventArgs bombEvent = new BombEventArgs();
-					bombEvent.Player = parser.Players[(int)data["userid"]];
+					bombEvent.Player = parser.players[(int)data["userid"]];
 					bombEvent.BombSite = (int)data["site"]; //entity index of the bombsite.
 
 					parser.EventsManager.RaiseBombExploded(bombEvent);

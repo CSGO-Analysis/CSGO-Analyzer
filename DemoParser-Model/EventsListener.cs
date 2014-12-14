@@ -42,17 +42,17 @@ namespace DemoParser_Model
 
 		void eventsManager_BombExploded(object sender, BombEventArgs e)
 		{
-			throw new NotImplementedException();
+			
 		}
 
 		void eventsManager_BombDefused(object sender, BombEventArgs e)
 		{
-			throw new NotImplementedException();
+			
 		}
 
 		void eventsManager_BombPlanted(object sender, BombEventArgs e)
 		{
-			throw new NotImplementedException();
+			
 		}
 
 		void eventsManager_PlayerParsed(object sender, PlayerParsedEventArgs e)
@@ -98,7 +98,6 @@ namespace DemoParser_Model
 		void eventsManager_MatchEnded(object sender, MatchEndedEventArgs e)
 		{
 			this.scoreBoard = scoreBoardService.GetScoreBoard(game);
-			return;
 		}
 
 		void eventsManager_RoundStart(object sender, RoundStartedEventArgs e)
