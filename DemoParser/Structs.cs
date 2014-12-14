@@ -29,7 +29,7 @@ namespace DemoParser_Core
 		{
 			get 
 			{
-				return this.X * this.X + this.Y * this.Y;
+				return this.X * this.X + this.Y * this.Y + this.Z * this.Z;
 			}
 		}
 
