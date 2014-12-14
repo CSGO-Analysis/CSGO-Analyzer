@@ -13,8 +13,12 @@ namespace DemoParser_Core.Entities
 		public long SteamID { get; internal set; }
 		public Team Team { get; internal set; }
 
-		public int Health { get; internal set; }
 		public int Money { get; internal set; }
+		public int Health { get; internal set; }
+		public int Armor { get; internal set; }
+		public bool HasHelmet { get; internal set; }
+		public bool HasDefuseKit { get; internal set; }
+		
 		public Vector Position { get; internal set; }
 		public Vector LastAlivePosition { get; internal set; }
 		public Vector Velocity { get; internal set; }
@@ -51,27 +55,22 @@ namespace DemoParser_Core.Entities
 			if (entity.Properties.ContainsKey("m_vecOrigin"))
 			{
 				this.Position = (Vector)entity.Properties["m_vecOrigin"];
+				this.Position.Z = (float)entity.Properties.GetValueOrDefault("m_vecOrigin[2]", 0f);
+				
+				this.Health = (int)entity.Properties.GetValueOrDefault("m_iHealth", -1);
+				this.Armor = (int)entity.Properties.GetValueOrDefault("m_ArmorValue", -1);
+				this.HasDefuseKit = ((int)entity.Properties.GetValueOrDefault("m_bHasDefuser", 0)) == 1;
+				this.HasHelmet = ((int)entity.Properties.GetValueOrDefault("m_bHasHelmet", 0)) == 1;
 
-				if (entity.Properties.ContainsKey("m_vecOrigin[2]"))
-					this.Position.Z = (float)entity.Properties.GetValueOrDefault("m_vecOrigin[2]", 0);
-
-				if (entity.Properties.ContainsKey("m_iHealth"))
-					this.Health = (int)entity.Properties["m_iHealth"];
-				else
-					this.Health = -1;
-
-				this.Money = (int)entity.Properties.GetValueOrDefault<string, object>("m_iAccount", 0);
+				this.Money = (int)entity.Properties.GetValueOrDefault("m_iAccount", 0);
 
 				this.Velocity = new Vector();
-				this.Velocity.X = (float)entity.Properties.GetValueOrDefault<string, object>("m_vecVelocity[0]", 0f);
-				this.Velocity.Y = (float)entity.Properties.GetValueOrDefault<string, object>("m_vecVelocity[1]", 0f);
-				this.Velocity.Z = (float)entity.Properties.GetValueOrDefault<string, object>("m_vecVelocity[2]", 0f);
+				this.Velocity.X = (float)entity.Properties.GetValueOrDefault("m_vecVelocity[0]", 0f);
+				this.Velocity.Y = (float)entity.Properties.GetValueOrDefault("m_vecVelocity[1]", 0f);
+				this.Velocity.Z = (float)entity.Properties.GetValueOrDefault("m_vecVelocity[2]", 0f);
 
-				if (entity.Properties.ContainsKey("m_angEyeAngles[1]"))
-					this.ViewDirectionX = (float)entity.Properties["m_angEyeAngles[1]"];
-
-				if (entity.Properties.ContainsKey("m_angEyeAngles[0]"))
-					this.ViewDirectionY = (float)entity.Properties["m_angEyeAngles[0]"];
+				this.ViewDirectionX = (float)entity.Properties.GetValueOrDefault("m_angEyeAngles[1]", 0f);
+				this.ViewDirectionY = (float)entity.Properties.GetValueOrDefault("m_angEyeAngles[0]", 0f);
 
 				if (this.IsAlive)
 				{

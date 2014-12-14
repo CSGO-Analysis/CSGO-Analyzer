@@ -23,6 +23,7 @@ namespace DemoParser_Core.Entities
 		public int Score { get; internal set; }
 		public int ScoreFirstHalf { get; internal set; }
 		public int ScoreSecondHalf { get; internal set; }
+		public int ScoreOvertime { get; internal set; }
 
 		public int[] player_array { get; internal set; }
 
@@ -38,9 +39,9 @@ namespace DemoParser_Core.Entities
 
 				if (entity.Properties.ContainsKey("m_szTeamname"))
 				{
-					this.Name = (string)entity.Properties.GetValueOrDefault<string, object>("m_szClanTeamname", (string)entity.Properties["m_szTeamname"]);
-					this.Flag = (string)entity.Properties.GetValueOrDefault<string, object>("m_szTeamFlagImage", string.Empty);
-					//this.player_array = (int[])entity.Properties.GetValueOrDefault<string, object>("\"player_array\"", new int[5]);
+					this.Name = (string)entity.Properties.GetValueOrDefault("m_szClanTeamname", (string)entity.Properties["m_szTeamname"]);
+					this.Flag = (string)entity.Properties.GetValueOrDefault("m_szTeamFlagImage", string.Empty);
+					//this.player_array = (int[])entity.Properties.GetValueOrDefault>("\"player_array\"", new int[5]);
 				}
 			}
 		}
@@ -53,22 +54,16 @@ namespace DemoParser_Core.Entities
 
 				if (entity.Properties.ContainsKey("m_szTeamname"))
 				{
-					this.Name = (string)entity.Properties.GetValueOrDefault<string, object>("m_szClanTeamname", (string)entity.Properties["m_szTeamname"]);
-					this.Flag = (string)entity.Properties.GetValueOrDefault<string, object>("m_szTeamFlagImage", string.Empty);
-					//this.player_array = (int[])entity.Properties.GetValueOrDefault<string, object>("\"player_array\"", new int[5]);
+					this.Name = (string)entity.Properties.GetValueOrDefault("m_szClanTeamname", (string)entity.Properties["m_szTeamname"]);
+					this.Flag = (string)entity.Properties.GetValueOrDefault("m_szTeamFlagImage", string.Empty);
+					//this.player_array = (int[])entity.Properties.GetValueOrDefault("\"player_array\"", new int[5]);
 				}
 			}
 
-			if (entity.Properties.ContainsKey("m_scoreTotal") && entity.Properties.ContainsKey("m_scoreFirstHalf"))
-			{
-				this.Score = (int)entity.Properties["m_scoreTotal"];
-				this.ScoreFirstHalf = (int)entity.Properties["m_scoreFirstHalf"];
-
-				if (entity.Properties.ContainsKey("m_scoreSecondHalf"))
-				{
-					this.ScoreSecondHalf = (int)entity.Properties["m_scoreSecondHalf"];
-				}
-			}
+			this.Score = (int)entity.Properties.GetValueOrDefault("m_scoreTotal", 0);
+			this.ScoreFirstHalf = (int)entity.Properties.GetValueOrDefault("m_scoreFirstHalf", 0);
+			this.ScoreSecondHalf = (int)entity.Properties.GetValueOrDefault("m_scoreSecondHalf", 0);
+			this.ScoreOvertime = (int)entity.Properties.GetValueOrDefault("m_scoreOvertime", 0);
 		}
 
 		public override string ToString()
