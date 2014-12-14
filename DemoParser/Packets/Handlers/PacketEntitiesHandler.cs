@@ -103,6 +103,7 @@ namespace DemoParser_Core.Packets.Handlers
 			else if (entity.ServerClass.DTName == "DT_CSPlayer")
 			{
 				// TODO WARN Player should already exists because created when stringtables are received
+				// TODO is this really working? O_o
 				int index = entity.ID - 1;
 
 				if (!parser.entities.ContainsKey(index) || index >= parser.players.Count)

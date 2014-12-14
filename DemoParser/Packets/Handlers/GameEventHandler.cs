@@ -165,7 +165,38 @@ namespace DemoParser_Core.Packets.Handlers
 					}
 					break;
 
-					#region Nades
+				#region Bomb
+				case "bomb_planted": //When the bomb has been planted
+					MapData(eventDescriptor, rawEvent);
+
+					BombEventArgs bombEventArgs = new BombEventArgs();
+					bombEventArgs.Player = parser.Players[(int)data["userid"]];
+					bombEventArgs.BombSite = (int)data["site"]; //entity index of the bombsite.
+
+					parser.EventsManager.RaiseBombPlanted(bombEventArgs);
+					break;
+				case "bomb_defused": //When the bomb has been defused
+					MapData(eventDescriptor, rawEvent);
+
+					BombEventArgs bombEventArg = new BombEventArgs();
+					bombEventArg.Player = parser.Players[(int)data["userid"]];
+					bombEventArg.BombSite = (int)data["site"]; //entity index of the bombsite.
+
+					parser.EventsManager.RaiseBombDefused(bombEventArg);
+					break;
+				case "bomb_exploded": //When the bomb has exploded
+					MapData(eventDescriptor, rawEvent);
+
+					BombEventArgs bombEvent = new BombEventArgs();
+					bombEvent.Player = parser.Players[(int)data["userid"]];
+					bombEvent.BombSite = (int)data["site"]; //entity index of the bombsite.
+
+					parser.EventsManager.RaiseBombExploded(bombEvent);
+					break;
+
+				#endregion
+
+				#region Nades
 				/*case "player_blind":
 					MapData (eventDescriptor, rawEvent);
 					if (parser.Players.ContainsKey((int)data["userid"] - 2))

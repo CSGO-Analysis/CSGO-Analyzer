@@ -34,6 +34,25 @@ namespace DemoParser_Model
 			eventsManager.RoundStart += eventsManager_RoundStart;
 			eventsManager.RoundMvp += eventsManager_RoundMvp;
 			eventsManager.RoundEnd += eventsManager_RoundEnd;
+
+			eventsManager.BombPlanted += eventsManager_BombPlanted;
+			eventsManager.BombDefused += eventsManager_BombDefused;
+			eventsManager.BombExploded += eventsManager_BombExploded;
+		}
+
+		void eventsManager_BombExploded(object sender, BombEventArgs e)
+		{
+			throw new NotImplementedException();
+		}
+
+		void eventsManager_BombDefused(object sender, BombEventArgs e)
+		{
+			throw new NotImplementedException();
+		}
+
+		void eventsManager_BombPlanted(object sender, BombEventArgs e)
+		{
+			throw new NotImplementedException();
 		}
 
 		void eventsManager_PlayerParsed(object sender, PlayerParsedEventArgs e)

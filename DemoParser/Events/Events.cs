@@ -81,6 +81,12 @@ namespace DemoParser_Core.Events
 		public int PenetratedObjects { get; internal set; }
 	}
 
+	public class BombEventArgs : EventArgs
+	{
+		public Player Player { get; internal set; }
+		public Int32 BombSite { get; internal set; }
+	}
+
 	public class WeaponFiredEventArgs : EventArgs
 	{
 		public Equipment Weapon { get; internal set; }

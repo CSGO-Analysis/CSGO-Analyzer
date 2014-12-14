@@ -18,10 +18,14 @@ namespace DemoParser_Core.Events
 		public event EventHandler<RoundEndedEventArgs> RoundEnd;
 		public event EventHandler<RoundMvpEventArgs> RoundMvp;
 		public event EventHandler<RoundOfficiallyEndedEventArgs> RoundOfficiallyEnded;
+
 		public event EventHandler<PlayerKilledEventArgs> PlayerKilled;
+		public event EventHandler<PlayerChatEventArgs> PlayerChat;
 		public event EventHandler<WeaponFiredEventArgs> WeaponFired;
 
-		public event EventHandler<PlayerChatEventArgs> PlayerChat;
+		public event EventHandler<BombEventArgs> BombPlanted;
+		public event EventHandler<BombEventArgs> BombDefused;
+		public event EventHandler<BombEventArgs> BombExploded;
 
 		public event EventHandler<SmokeEventArgs> SmokeNadeStarted;
 		public event EventHandler<SmokeEventArgs> SmokeNadeEnded;
@@ -121,6 +125,24 @@ namespace DemoParser_Core.Events
 		{
 			if (WeaponFired != null)
 				WeaponFired(this, fire);
+		}
+
+		internal void RaiseBombPlanted(BombEventArgs args)
+		{
+			if (BombPlanted != null)
+				BombPlanted(this, args);
+		}
+
+		internal void RaiseBombDefused(BombEventArgs args)
+		{
+			if (BombDefused != null)
+				BombDefused(this, args);
+		}
+
+		internal void RaiseBombExploded(BombEventArgs args)
+		{
+			if (BombExploded != null)
+				BombExploded(this, args);
 		}
 
 		internal void RaiseSmokeStart(SmokeEventArgs args)
