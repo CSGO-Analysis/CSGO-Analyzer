@@ -14,10 +14,12 @@ namespace DemoParser_Core.StringTables
 
 		public void ParsePacket(Stream stream, DemoParser parser)
         {
-			using (IBitStream reader = BitStreamUtil.Create(stream)) {
+			using (IBitStream reader = BitStreamUtil.Create(stream))
+			{
 				int numTables = reader.ReadByte();
 
-				for (int i = 0; i < numTables; i++) {
+				for (int i = 0; i < numTables; i++)
+				{
 					string tableName = reader.ReadString();
 
 					ParseStringTable(reader, tableName, parser);
@@ -46,7 +48,7 @@ namespace DemoParser_Core.StringTables
 					{
 						case "userinfo":
 							PlayerInfo info = PlayerInfo.ParseFrom(new BinaryReader(new MemoryStream(data)));
-							UpdatePlayers(info, parser);
+							UpdatePlayer(info, parser);
 							break;
 						case "instancebaseline": // TODO implement
 							//int classid = int.Parse(stringName);
@@ -161,12 +163,12 @@ namespace DemoParser_Core.StringTables
 					BinaryReader playerReader = new BinaryReader(new MemoryStream(userdata));
 					PlayerInfo info = PlayerInfo.ParseFrom(playerReader);
 
-					UpdatePlayers(info, parser);
+					UpdatePlayer(info, parser);
 				}
 			}
 		}
 
-		private static void UpdatePlayers(PlayerInfo playerInfo, DemoParser parser)
+		private static void UpdatePlayer(PlayerInfo playerInfo, DemoParser parser)
 		{
 			if (!parser.players.ContainsKey(playerInfo.UserID))
 			{
