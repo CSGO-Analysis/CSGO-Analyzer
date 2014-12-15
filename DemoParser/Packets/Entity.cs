@@ -36,8 +36,7 @@ namespace DemoParser_Core.Packets
 				Properties[propertyEntry.Prop.Name] = PropertyDecoder.DecodeProp(propertyEntry, reader);
 			}
 		}
-
-		// TODO check for protocol version support
+		
         int ReadFieldIndex(IBitStream reader, int lastIndex, bool bNewWay)
         {
             if (bNewWay)
