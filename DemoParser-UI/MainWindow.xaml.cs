@@ -250,8 +250,6 @@ namespace DemoParser_UI
 
 					this.textblockContent.Text += "Round started " + TimeSpan.FromSeconds(demoParser.CurrentTime).ToString(@"hh\:mm\:ss") + Environment.NewLine;
 					this.scrollViewer.ScrollToBottom();
-
-					UpdateTeamsData();
 				}
 			));
 		}
@@ -316,13 +314,14 @@ namespace DemoParser_UI
 					{
 						this.imageFlag1.Source = new BitmapImage(new Uri("Resources/Flags/" + e.Team.Flag + ".png", UriKind.Relative));
 						this.labelTeam1.Content = e.Team.Name;
+						this.labelScore1.Content = String.Format("{0} ({1}:{2})", e.Team.Score, e.Team.Side, e.Team.ScoreFirstHalf);
 					}
 					else if (e.Team.Num == 3)
 					{
 						this.imageFlag2.Source = new BitmapImage(new Uri("Resources/Flags/" + e.Team.Flag + ".png", UriKind.Relative));
 						this.labelTeam2.Content = e.Team.Name;
+						this.labelScore2.Content = String.Format("{0} ({1}:{2})", e.Team.Score, e.Team.Side, e.Team.ScoreFirstHalf);
 					}
-
 				}
 			}
 			));

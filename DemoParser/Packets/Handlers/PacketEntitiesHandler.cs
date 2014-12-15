@@ -95,9 +95,9 @@ namespace DemoParser_Core.Packets.Handlers
 				{
 					Team team = new Team(entity);
 					parser.teams.Add(teamNum, team);
-					parser.EventsManager.RaiseTeamParsed(new TeamParsedEventArgs(team));
 				}
 				parser.teams[teamNum].Update(entity);
+				parser.EventsManager.RaiseTeamParsed(new TeamParsedEventArgs(parser.teams[teamNum]));
 			}
 			// Player
 			else if (entity.ServerClass.DTName == "DT_CSPlayer")
