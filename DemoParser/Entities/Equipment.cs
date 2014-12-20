@@ -167,6 +167,7 @@ namespace DemoParser_Core.Entities
 						weapon = EquipmentElement.XM1014;
 						break;
 					case "m4a1_silencer":
+					case "m4a1_silencer_off":
 						weapon = EquipmentElement.M4A1;
 						break;
 					case "cz75a":
