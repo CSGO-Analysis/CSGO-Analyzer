@@ -3,10 +3,7 @@ using DemoParser_Core.Events;
 using DemoParser_Model.Models;
 using DemoParser_Model.Services;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DemoParser_Model
 {
@@ -14,15 +11,12 @@ namespace DemoParser_Model
 	{
 		private IScoreBoardService scoreBoardService = new ScoreBoardService();
 
-		//private DemoParser demoParser;
-		private EventsManager eventsManager;
-
 		private Game game = new Game();
 		public ScoreBoard scoreBoard = new ScoreBoard();
 
 		public EventsListener(DemoParser demoParser)
 		{
-			this.eventsManager = demoParser.EventsManager;
+			var eventsManager = demoParser.EventsManager;
 
 			eventsManager.HeaderParsed += eventsManager_HeaderParsed;
 			eventsManager.TeamParsed += eventsManager_TeamParsed;
