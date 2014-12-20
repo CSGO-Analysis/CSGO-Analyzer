@@ -12,11 +12,24 @@ namespace DemoParser_Console
 	{
 		static void Main(string[] args)
 		{
-			Console.WriteLine(DateTime.Now);
+			DateTime begin;
+			DateTime end;
+			
 			Stream inputStream = new FileStream(args[0], FileMode.Open);
+
+			Console.WriteLine("Parsing...");
+
+			begin = DateTime.Now;
+
 			DemoParser parser = new DemoParser(inputStream);
 			parser.ParseDemo(true);
-			Console.WriteLine(DateTime.Now);
+
+			end = DateTime.Now;
+
+			Console.WriteLine(String.Format("Started: {0}", begin.ToString("HH:mm:ss.ffffff")));
+			Console.WriteLine(String.Format("Finished: {0}", end.ToString("HH:mm:ss.ffffff")));
+			Console.WriteLine(String.Format("\nTotal: {0}", (end - begin)));
+
 			Console.ReadKey();
 		}
 	}
