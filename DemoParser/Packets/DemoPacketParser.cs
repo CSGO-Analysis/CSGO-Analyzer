@@ -59,12 +59,11 @@ namespace DemoParser_Core.Packets
                     NET_Messages msg = (NET_Messages)cmd;
 					toParse = MessagesCNET["DemoParser_Core.Messages.CNETMsg_" + msg.ToString().Substring(4)];
                 }
-
-                if (toParse == null)  
-                {
-                    reader.ReadBytes(reader.ReadVarInt32());
-                    continue;
-                }
+				else
+				{
+					reader.ReadBytes(reader.ReadVarInt32());
+					continue;
+				}
 
                 IExtensible message = reader.ReadProtobufMessage(toParse, ProtoBuf.PrefixStyle.Base128);
 

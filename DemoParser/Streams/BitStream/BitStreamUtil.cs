@@ -27,7 +27,7 @@ namespace DemoParser_Core.Streams.BitStream
 			bs3.Initialize(new MemoryStream(data));
 			return new DebugBitStream(bs1, new DebugBitStream(bs2, bs3));
 			#else
-			var bs = new ManagedBitStream();
+			var bs = new UnsafeBitStream();
 			bs.Initialize(stream);
 			return bs;
 			#endif
@@ -46,7 +46,7 @@ namespace DemoParser_Core.Streams.BitStream
 			bs3.Initialize(new MemoryStream(data));
 			return new DebugBitStream(bs1, new DebugBitStream(bs2, bs3));
 			#else
-			var bs = new ManagedBitStream();
+			var bs = new UnsafeBitStream();
 			bs.Initialize(new MemoryStream(data));
 			return bs;
 			#endif

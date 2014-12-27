@@ -2,6 +2,7 @@
 using System.IO;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Collections.Generic;
 
 namespace DemoParser_Core.Streams.BitStream
 {
@@ -17,16 +18,41 @@ namespace DemoParser_Core.Streams.BitStream
 		public int Position { get; private set; }
 		private int Offset;
 		private Stream Underlying;
-		private GCHandle HBuffer;
+
+		class _buf
+		{
+			public GCHandle HBuffer;
+			public byte* PBuffer;
+			public byte[] Buffer = new byte[BUFSIZE];
+		}
+
 		private byte* PBuffer;
-		private byte[] Buffer = new byte[BUFSIZE];
+		private byte[] Buffer = null;
+		private static GCHandle HBuffer;
+
+		private static List<_buf> _bufs = new List<_buf>();
+		private static int BufIndex = 0;
 
 		public int BitsInBuffer;
 
+		static UnsafeBitStream()
+		{
+			//create two _buf
+			for (var i = 0; i < 2; i++)
+			{
+				var _buf = new _buf();
+				_buf.HBuffer = GCHandle.Alloc(_buf.Buffer, GCHandleType.Pinned);
+				_buf.PBuffer = (byte*)_buf.HBuffer.AddrOfPinnedObject().ToPointer();
+				_bufs.Add(_buf);
+			}
+		}
+
 		public void Initialize(Stream underlying)
 		{
-			HBuffer = GCHandle.Alloc(Buffer, GCHandleType.Pinned);
-			PBuffer = (byte*)HBuffer.AddrOfPinnedObject().ToPointer();
+			PBuffer = _bufs[BufIndex].PBuffer;
+			Buffer = _bufs[BufIndex].Buffer;
+			HBuffer = _bufs[BufIndex].HBuffer;
+			BufIndex++;
 
 			this.Underlying = underlying;
 			RefillBuffer();
@@ -36,9 +62,10 @@ namespace DemoParser_Core.Streams.BitStream
 
 		void IDisposable.Dispose()
 		{
-			PBuffer = (byte*)IntPtr.Zero.ToPointer(); // null it out
-			HBuffer.Free();
-			Buffer = null;
+			BufIndex--;
+			//PBuffer = (byte*)IntPtr.Zero.ToPointer(); // null it out
+			//HBuffer.Free();
+			//Buffer = null;
 		}
 
 		private void Advance(int howMuch)
@@ -96,32 +123,38 @@ namespace DemoParser_Core.Streams.BitStream
 		{
 			var ret = new byte[bytes];
 			ReadBytes(ret, bytes);
-
 			return ret;
 		}
 
 		private void ReadBytes(byte[] ret, int bytes)
 		{
-			if (bytes < 3) {
+			if (bytes < 3)
+			{
 				for (int i = 0; i < bytes; i++)
 					ret[i] = ReadByte();
-			} else if ((Offset % 8) == 0) {
+			}
+			else if ((Offset % 8) == 0)
+			{
 				// zomg we have byte alignment
 				int offset = 0;
-				while (offset < bytes) {
+				while (offset < bytes)
+				{
 					int remainingBytes = Math.Min((BitsInBuffer - Offset) / 8, bytes - offset);
 					System.Buffer.BlockCopy(Buffer, Offset / 8, ret, offset, remainingBytes);
 					offset += remainingBytes;
 					Advance(remainingBytes * 8);
 				}
-			} else fixed (byte* retptr = ret) {
-				int offset = 0;
-				while (offset < bytes) {
-					int remainingBytes = Math.Min((BitsInBuffer - Offset) / 8 + 1, bytes - offset);
-					HyperspeedCopyRound(remainingBytes, retptr + offset);
-					offset += remainingBytes;
-				}
 			}
+			else fixed (byte* retptr = ret)
+				{
+					int offset = 0;
+					while (offset < bytes)
+					{
+						int remainingBytes = Math.Min((BitsInBuffer - Offset) / 8 + 1, bytes - offset);
+						HyperspeedCopyRound(remainingBytes, retptr + offset);
+						offset += remainingBytes;
+					}
+				}
 		}
 
 		private void HyperspeedCopyRound(int bytes, byte* retptr) // you spin me right round baby right round...
@@ -136,7 +169,8 @@ namespace DemoParser_Core.Streams.BitStream
 			var inptr = (ulong*)(PBuffer + (Offset / 8));
 			var outptr = (ulong*)retptr;
 			// main loop
-			for (int i = 0; i < ((bytes - 1) / sizeof(ulong)); i++) {
+			for (int i = 0; i < ((bytes - 1) / sizeof(ulong)); i++)
+			{
 				ulong current = *inptr++;
 				step |= current << misalign;
 				*outptr++ = step;
@@ -162,7 +196,7 @@ namespace DemoParser_Core.Streams.BitStream
 
 		public float ReadFloat()
 		{
-			uint iResult = PeekInt(32);
+			uint iResult = PeekInt(32); // omfg please inline this
 			Advance(32);
 			return *(float*)&iResult; // standard reinterpret cast
 		}
