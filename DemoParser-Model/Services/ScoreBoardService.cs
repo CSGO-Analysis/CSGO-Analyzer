@@ -60,11 +60,11 @@ namespace DemoParser_Model.Services
 			}
 
 			PlayerRatingData data = ratingService.ComputeRatingData(game, player);
-			line._1K = data.Kill1;
-			line._2K = data.Kill2;
-			line._3K = data.Kill3;
-			line._4K = data.Kill4;
-			line._5K = data.Kill5;
+			line._1K = data._1K;
+			line._2K = data._2K;
+			line._3K = data._3K;
+			line._4K = data._4K;
+			line._5K = data._5K;
 
 			line.Rating = ratingService.ComputeRating(game.Rounds.Count, data);
 
