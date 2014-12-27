@@ -29,11 +29,31 @@ namespace DemoParser_Core.Events
 		}
 	}
 
+	public class TeamUpdateParsedEventArgs : EventArgs
+	{
+		public Team Team { get; internal set; }
+
+		public TeamUpdateParsedEventArgs(Team team)
+		{
+			this.Team = team;
+		}
+	}
+
 	public class PlayerParsedEventArgs : EventArgs
 	{
 		public Player Player { get; internal set; }
 
 		public PlayerParsedEventArgs(Player player)
+		{
+			this.Player = player;
+		}
+	}
+
+	public class PlayerUpdateParsedEventArgs : EventArgs
+	{
+		public Player Player { get; internal set; }
+
+		public PlayerUpdateParsedEventArgs(Player player)
 		{
 			this.Player = player;
 		}

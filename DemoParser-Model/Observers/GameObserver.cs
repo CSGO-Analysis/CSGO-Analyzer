@@ -1,22 +1,19 @@
 ﻿using DemoParser_Core;
 using DemoParser_Core.Events;
-using DemoParser_Model.Models;
-using DemoParser_Model.Services;
 using System;
 using System.Linq;
 
-namespace DemoParser_Model
+namespace DemoParser_Model.Observers
 {
-	public class EventsListener
+	public class GameObserver : Observer
 	{
-		private IScoreBoardService scoreBoardService = new ScoreBoardService();
+		protected Game game;
 
-		private Game game = new Game();
-		public ScoreBoard scoreBoard = new ScoreBoard();
-
-		public EventsListener(DemoParser demoParser)
+		public GameObserver(DemoParser demoParser) : base(demoParser)
 		{
-			var eventsManager = demoParser.EventsManager;
+			this.game = new Game();
+
+			var eventsManager = parser.EventsManager;
 
 			eventsManager.HeaderParsed += eventsManager_HeaderParsed;
 			eventsManager.TeamParsed += eventsManager_TeamParsed;
@@ -34,29 +31,29 @@ namespace DemoParser_Model
 			eventsManager.BombExploded += eventsManager_BombExploded;
 		}
 
-		void eventsManager_BombExploded(object sender, BombEventArgs e)
+		protected virtual void eventsManager_BombExploded(object sender, BombEventArgs e)
 		{
 			
 		}
 
-		void eventsManager_BombDefused(object sender, BombEventArgs e)
+		protected virtual void eventsManager_BombDefused(object sender, BombEventArgs e)
 		{
 			
 		}
 
-		void eventsManager_BombPlanted(object sender, BombEventArgs e)
+		protected virtual void eventsManager_BombPlanted(object sender, BombEventArgs e)
 		{
 			
 		}
 
-		void eventsManager_PlayerParsed(object sender, PlayerParsedEventArgs e)
+		protected virtual void eventsManager_PlayerParsed(object sender, PlayerParsedEventArgs e)
 		{
 			if (e.Player.Team != null)
 			{
 				Team team = game.GetTeam(e.Player.Team.Id);
 				Player player = new Player(e.Player.Name, e.Player.SteamID, team);
 
-				team.Players.Add(player);
+				team.AddPlayer(player);
 				game.AddPlayer(player);
 			}
 			else
@@ -66,22 +63,22 @@ namespace DemoParser_Model
 			}
 		}
 
-		void eventsManager_TeamParsed(object sender, TeamParsedEventArgs e)
+		protected virtual void eventsManager_TeamParsed(object sender, TeamParsedEventArgs e)
 		{
 			Team team = new Team(e.Team.Name, e.Team.Flag);
 			team.Id = e.Team.Id;
 
-			game.Teams.Add(team);
+			game.AddTeam(team);
 		}
 
-		void eventsManager_HeaderParsed(object sender, DemoParser_Core.Events.HeaderParsedEventArgs e)
+		protected virtual void eventsManager_HeaderParsed(object sender, DemoParser_Core.Events.HeaderParsedEventArgs e)
 		{
 			game.Map = e.Header.MapName;
 			game.Duration = e.Header.PlaybackTime;
 			game.Date = DateTime.Now;
 		}
 
-		void eventsManager_MatchStarted(object sender, MatchStartedEventArgs e)
+		protected virtual void eventsManager_MatchStarted(object sender, MatchStartedEventArgs e)
 		{
 			game.IsStarted = true;
 
@@ -89,12 +86,12 @@ namespace DemoParser_Model
 			game.Rounds.Add(new Round());
 		}
 
-		void eventsManager_MatchEnded(object sender, MatchEndedEventArgs e)
+		protected virtual void eventsManager_MatchEnded(object sender, MatchEndedEventArgs e)
 		{
-			this.scoreBoard = scoreBoardService.GetScoreBoard(game);
+			
 		}
 
-		void eventsManager_RoundStart(object sender, RoundStartedEventArgs e)
+		protected virtual void eventsManager_RoundStart(object sender, RoundStartedEventArgs e)
 		{
 			if (game.IsStarted)
 			{
@@ -102,7 +99,7 @@ namespace DemoParser_Model
 			}
 		}
 
-		void eventsManager_RoundEnd(object sender, RoundEndedEventArgs e)
+		protected virtual void eventsManager_RoundEnd(object sender, RoundEndedEventArgs e)
 		{
 			if (game.IsStarted)
 			{
@@ -112,7 +109,7 @@ namespace DemoParser_Model
 			}
 		}
 
-		void eventsManager_RoundMvp(object sender, RoundMvpEventArgs e)
+		protected virtual void eventsManager_RoundMvp(object sender, RoundMvpEventArgs e)
 		{
 			if (game.IsStarted)
 			{
@@ -121,7 +118,7 @@ namespace DemoParser_Model
 			}
 		}
 
-		void eventsManager_PlayerKilled(object sender, PlayerKilledEventArgs e)
+		protected virtual void eventsManager_PlayerKilled(object sender, PlayerKilledEventArgs e)
 		{
 			if (game.IsStarted)
 			{

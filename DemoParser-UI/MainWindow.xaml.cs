@@ -2,6 +2,7 @@
 using DemoParser_Core.Entities;
 using DemoParser_Core.Events;
 using DemoParser_Model;
+using DemoParser_Model.Observers;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,8 @@ namespace DemoParser_UI
     public partial class MainWindow : Window
     {
         private DemoParser demoParser;
-		private EventsListener eventsListener;
+		private ScoreboardObserver scoreboardObserver;
+		private CheatObserver cheatObserver;
 
 		private ManualResetEvent locker = new ManualResetEvent(true);
 		private BackgroundWorker bw;
@@ -37,8 +39,6 @@ namespace DemoParser_UI
 		private int nbSeconds;
 
 		private Stopwatch t1;
-
-		private bool matchInProgress;
 
         public MainWindow()
         {
@@ -82,9 +82,8 @@ namespace DemoParser_UI
 			//demoParser.EventsManager.WeaponFired += demoParser_WeaponFired;
 			demoParser.EventsManager.TeamParsed += demoParser_TeamParsed;
 
-			eventsListener = new EventsListener(this.demoParser);
-
-			matchInProgress = true;
+			scoreboardObserver = new ScoreboardObserver(this.demoParser);
+			cheatObserver = new CheatObserver(this.demoParser);
 		}
 
 		void timer_Elapsed(object sender, ElapsedEventArgs e)
@@ -175,8 +174,9 @@ namespace DemoParser_UI
 				this.textblockContent.Text += "Time: " + t1.Elapsed.ToString(@"ss\.fffffff");
 				this.dataGridTeams.ItemsSource = demoParser.Teams;
 				this.dataGridPlayers.ItemsSource = demoParser.Players;
-				this.dataGridScoreboard.ItemsSource = eventsListener.scoreBoard.GetLines();
+				this.dataGridScoreboard.ItemsSource = scoreboardObserver.scoreBoard.GetLines();
 				SortScoreboard();
+				this.dataGridCheatAnalyze.ItemsSource = cheatObserver.results;
 				this.buttonPause.IsEnabled = false;
 				this.tabItemData.IsEnabled = true;
 				this.tabItemScoreboard.IsEnabled = true;
@@ -279,7 +279,6 @@ namespace DemoParser_UI
 			Dispatcher.Invoke(new Action(() =>
 				{
 					this.textblockContent.Text += "Match ended" + Environment.NewLine;
-					matchInProgress = false;
 				}
 			));
 		}
@@ -337,24 +336,6 @@ namespace DemoParser_UI
 			dataView.SortDescriptions.Add(new SortDescription("Rating", ListSortDirection.Descending));
 			//refresh the view which in turn refresh the grid
 			dataView.Refresh();
-		}
-
-		private void UpdateTeamsData()
-		{
-			if (demoParser.Teams.Count > 0 && matchInProgress)
-			{
-				if (demoParser.Teams[1].Flag != null)
-				{
-					this.imageFlag1.Source = new BitmapImage(new Uri("Resources/Flags/" + demoParser.Teams[1].Flag + ".png", UriKind.Relative));
-					this.imageFlag2.Source = new BitmapImage(new Uri("Resources/Flags/" + demoParser.Teams[2].Flag + ".png", UriKind.Relative));
-				}
-
-				this.labelTeam1.Content = demoParser.Teams[1].Name;
-				this.labelTeam2.Content = demoParser.Teams[2].Name;
-
-				this.labelScore1.Content = String.Format("{0} ({1}:{2})", demoParser.Teams[1].Score, demoParser.Teams[1].Side, demoParser.Teams[1].ScoreFirstHalf);
-				this.labelScore2.Content = String.Format("{0} ({1}:{2})", demoParser.Teams[2].Score, demoParser.Teams[2].Side, demoParser.Teams[2].ScoreFirstHalf);
-			}
 		}
 	}
 }

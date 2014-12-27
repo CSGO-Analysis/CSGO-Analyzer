@@ -39,6 +39,11 @@
 					<DataGrid x:Name="dataGridScoreboard" VerticalAlignment="Top" SelectionMode="Extended" SelectionUnit="FullRow" AlternatingRowBackground="WhiteSmoke" />
 				</Grid>
 			</TabItem>
+			<TabItem x:Name="tabItemCheatAnalyze" Header="Analyze">
+				<Grid Background="#FFE5E5E5">
+					<DataGrid x:Name="dataGridCheatAnalyze" VerticalAlignment="Top" SelectionMode="Extended" SelectionUnit="FullRow" AlternatingRowBackground="WhiteSmoke" />
+				</Grid>
+			</TabItem>
 		</TabControl>
 
 	</Grid>

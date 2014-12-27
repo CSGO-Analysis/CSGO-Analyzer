@@ -81,7 +81,7 @@ namespace DemoParser_Core.Packets.Handlers
         }
 
 		/// <summary>
-		/// Mets à jour la liste des joueurs ou des teams selon le type d'entité
+		/// Update Team and Player lists based on entity values
 		/// </summary>
 		/// <param name="entity"></param>
 		private void UpdateModel(Entity entity, DemoParser parser)
@@ -111,6 +111,7 @@ namespace DemoParser_Core.Packets.Handlers
 
 				Player p = parser.Players[index];
 				p.Update(entity);
+				parser.EventsManager.RaisePlayerParsed(new PlayerParsedEventArgs(p));
 				
 				if (p.Team == null)
 				{

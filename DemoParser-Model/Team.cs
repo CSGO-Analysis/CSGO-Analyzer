@@ -27,5 +27,11 @@ namespace DemoParser_Model
 			this.Flag = flag;
 			this.Score = 0;
 		}
+
+		public void AddPlayer(Player player)
+		{
+			if (!Players.Contains(player))
+				Players.Add(player);
+		}
 	}
 }

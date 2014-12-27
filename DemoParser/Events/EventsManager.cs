@@ -9,7 +9,9 @@ namespace DemoParser_Core.Events
 
 		public event EventHandler<TickDoneEventArgs> TickDone;
 		public event EventHandler<TeamParsedEventArgs> TeamParsed;
+		public event EventHandler<TeamUpdateParsedEventArgs> TeamUpdateParsed;
 		public event EventHandler<PlayerParsedEventArgs> PlayerParsed;
+		public event EventHandler<PlayerUpdateParsedEventArgs> PlayerUpdateParsed;
 
 		#region GameEvents
 		public event EventHandler<MatchStartedEventArgs> MatchStarted;
