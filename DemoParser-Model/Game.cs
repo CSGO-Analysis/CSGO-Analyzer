@@ -26,6 +26,8 @@ namespace DemoParser_Model
 			this.Rounds = new List<Round>();
 			this.Players = new List<Player>();
 			this.Frags = new List<Frag>();
+
+			this.IsStarted = false;
 		}
 
 		public Game(DateTime date, string map, float duration) : this()
@@ -33,7 +35,6 @@ namespace DemoParser_Model
 			this.Date = date;
 			this.Duration = duration;
 			this.Map = map;
-			this.IsStarted = false;
 		}
 
 		public Team GetTeam(int teamId)
@@ -50,26 +51,22 @@ namespace DemoParser_Model
 		{
 			Player existingPlayer = GetPlayer(player.SteamId);
 
-			if (existingPlayer != null)
-			{
-				
-			}
-			else
+			if (existingPlayer == null)
 			{
 				Players.Add(player);
 			}
+			else
+			{
+				existingPlayer.Team = player.Team;
+			}
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="player"></param>
-		/// <param name="roundNumber"></param>
-		/// <param name="nbKill">0 = all kills of this round</param>
-		/// <returns></returns>
-		public int CountKillByRound(Player player, int roundNumber, int nbKill = 0)
+		public void AddTeam(Team team)
 		{
-			return 0;
+			Team existingTeam = GetTeam(team.Id);
+
+			if (existingTeam == null)
+				Teams.Add(team);
 		}
 	}
 }
