@@ -8,6 +8,7 @@ namespace DemoParser_Model.Models
 {
 	public class ScoreBoardLine
 	{
+		public string TeamName { get; set; }
 		public string PlayerName { get; set; }
 		public int Kills { get; set; }
 		public int Assist { get; set; }
@@ -18,6 +19,12 @@ namespace DemoParser_Model.Models
 		public double HSR { get { return Math.Round((double)Headshot / Kills, 2); } }
 		public double KDR { get { return Math.Round((double)Kills / Deaths, 2); } }
 		public int KDdiff { get { return Kills - Deaths; } }
+		public int _1K { get; set; }
+		public int _2K { get; set; }
+		public int _3K { get; set; }
+		public int _4K { get; set; }
+		public int _5K { get; set; }
+		//public int _1vX { get; set; }
 		public double Rating { get; set; }
 	}
 }

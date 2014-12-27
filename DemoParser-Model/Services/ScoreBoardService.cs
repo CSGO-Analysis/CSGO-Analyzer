@@ -26,6 +26,7 @@ namespace DemoParser_Model.Services
 			ScoreBoardLine line = new ScoreBoardLine();
 
 			line.PlayerName = player.Name;
+			line.TeamName = (player.Team != null) ? player.Team.Name : string.Empty;
 
 			foreach (Round round in game.Rounds)
 			{
@@ -58,7 +59,14 @@ namespace DemoParser_Model.Services
 				}
 			}
 
-			line.Rating = ratingService.ComputeRating(game, player);
+			PlayerRatingData data = ratingService.ComputeRatingData(game, player);
+			line._1K = data.Kill1;
+			line._2K = data.Kill2;
+			line._3K = data.Kill3;
+			line._4K = data.Kill4;
+			line._5K = data.Kill5;
+
+			line.Rating = ratingService.ComputeRating(game.Rounds.Count, data);
 
 			return line;
 		}
