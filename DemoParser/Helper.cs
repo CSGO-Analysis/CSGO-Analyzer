@@ -1,4 +1,5 @@
-﻿using DemoParser_Core.Streams;
+﻿using DemoParser_Core.DataTables;
+using DemoParser_Core.Streams;
 using ProtoBuf;
 using System;
 using System.Collections.Generic;
@@ -128,6 +129,11 @@ namespace DemoParser_Core
 			TValue value;
 			return dictionary.TryGetValue(key, out value) ? value
 				 : defaultValueProvider();
+		}
+
+		public static bool HasFlagFast(this SendPropertyFlags flags, SendPropertyFlags check)
+		{
+			return (flags & check) == check;
 		}
 	}
 }
