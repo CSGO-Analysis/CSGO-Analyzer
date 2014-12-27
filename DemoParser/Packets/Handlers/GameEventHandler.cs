@@ -81,42 +81,12 @@ namespace DemoParser_Core.Packets.Handlers
 				case "cs_win_panel_match":
 					parser.EventsManager.RaiseMatchEnded();
 					break;
-				/* commit git 25/11 73ac4ba
 				case "player_connect":
-					data = MapData(eventDescriptor, rawEvent);
-
-					PlayerInfo player = new PlayerInfo();
-					player.UserID = (int)data["userid"];
-					player.Name = (string)data["name"];
-	
-					//player.IsFakePlayer = (bool)data["bot"];
-	
-					int index = (int)data["index"];
-	
-					if (index < parser.RawPlayers.Count) {
-						//Roy said:
-						//"only replace existing player slot if the userID is different (very unlikely)"
-	
-						if (player.UserID != parser.RawPlayers[index].UserID) {
-							parser.RawPlayers[index] = player;
-						}
-	
-					} else {
-						parser.RawPlayers.Add(player);
-					}
-	
-	
+					//TODO throw event
 					break;
 				case "player_disconnect":
-					data = MapData(eventDescriptor, rawEvent);
-	
-					var user = parser.RawPlayers.Single(a => a.UserID == (int)data["userid"]);
-					parser.RawPlayers.Remove(user);
-	
-					parser.Players[(int)data["userid"]].Disconnected = true;
-	
+					//TODO throw event
 					break;
-				 */
 				case "player_chat":
 					MapData(eventDescriptor, rawEvent);
 
@@ -128,18 +98,6 @@ namespace DemoParser_Core.Packets.Handlers
 						chat.Message = (string)data["text"];
 
 						parser.EventsManager.RaisePlayerChat(chat);
-					}
-					break;
-				case "weapon_fire":
-					MapData (eventDescriptor, rawEvent);
-
-					if (parser.players.ContainsKey ((int)data ["userid"]))
-					{
-						WeaponFiredEventArgs fire = new WeaponFiredEventArgs ();
-						fire.Player = parser.players [(int)data ["userid"]];
-						fire.Weapon = new Equipment((string)data ["weapon"]);
-
-						parser.EventsManager.RaiseWeaponFired(fire);
 					}
 					break;
 				case "player_death":
