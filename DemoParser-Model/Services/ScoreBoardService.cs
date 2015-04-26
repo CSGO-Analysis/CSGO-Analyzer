@@ -53,7 +53,7 @@ namespace DemoParser_Model.Services
 					}
 				}
 
-				if (round.Mvp.SteamId == player.SteamId)
+				if (round.Mvp != null && round.Mvp.SteamId == player.SteamId)
 				{
 					line.Mvp++;
 				}
